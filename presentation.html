@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SystemZero - Profesjonalna Automatyzacja AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --primary-color: #1a1a1a;
+            --secondary-color: #2c2c2c;
+            --accent-color: #ffffff;
+            --text-color: #ffffff;
+            --text-secondary-color: #b3b3b3;
+            --border-color: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        main {
+            position: relative;
+        }
+
+        .container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+            width: 100%;
+            padding: 4rem 2rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(20px);
+            will-change: opacity, transform;
+        }
+
+        .container.active {
+            display: flex !important;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .container.exit {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        #hero {
+            display: flex;
+        }
+
+        .content-wrapper {
+            background: var(--primary-color);
+            padding: 3rem;
+            border-radius: 1rem;
+            max-width: 1100px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+        }
+        
+        .animated-item {
+             opacity: 0;
+             transform: translateY(20px);
+             animation: slideUp 0.6s forwards;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary-color);
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            background: var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            text-shadow: none;
+        }
+        
+        .btn-return {
+            background: var(--secondary-color);
+            background-image: none;
+            margin-top: 3rem;
+            display: inline-block;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        .module-card .icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .module-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .benefits-list, .process-list {
+            list-style: none;
+            text-align: left;
+            max-width: 700px;
+            margin: 1.5rem auto;
+        }
+        
+        .benefits-list li, .process-list li {
+            background: var(--secondary-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .benefits-list li:hover, .process-list li:hover {
+            background-color: var(--border-color);
+        }
+
+        .benefits-list i {
+            color: var(--accent-color);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            margin-right: 1rem;
+        }
+        
+        .process-list {
+             counter-reset: step-counter;
+        }
+        
+        .process-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            margin-right: 1rem;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .technical-description {
+            background: var(--primary-color);
+            color: #f0f0f0;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            white-space: pre-wrap;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Animacje */
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsywność */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .content-wrapper {
+                padding: 2rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            .button-group {
+                gap: 1rem;
+            }
+        }
+        
+         @media (max-width: 480px) {
+            .container {
+                padding: 3rem 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        /* -- Style dla Chatbota -- */
+        .chatbot-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .popup-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 1002;
+        }
+
+        .demo-container {
+            background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(220, 38, 38, 0.4),
+                        0 0 0 1px rgba(220, 38, 38, 0.1);
+            max-width: 480px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1001;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .logo-container {
+            width: 60px;
+            height: 60px;
+            background: #000000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .logo-container img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-text h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-text p {
+            font-size: 13px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: blink 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #0f0f0f;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 18px;
+            display: flex;
+            gap: 12px;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user { flex-direction: row-reverse; }
+
+        .message-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .message.ai .message-avatar {
+            background: #000000;
+            border: 2px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .message.ai .message-avatar img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            color: white;
+            font-size: 18px;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-content {
+            background: linear-gradient(145deg, #1f1f1f 0%, #1a1a1a 100%);
+            color: #e5e7eb;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+        }
+
+        .property-carousel { margin-top: 15px; }
+        .carousel-container { position: relative; overflow: hidden; border-radius: 16px; }
+        .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .property-card { min-width: 100%; background: linear-gradient(145deg, #262626 0%, #1a1a1a 100%); border: 2px solid rgba(220, 38, 38, 0.3); border-radius: 16px; overflow: hidden; }
+        .property-image { width: 100%; height: 200px; background-size: cover; background-position: center; position: relative; }
+        .property-badge { position: absolute; top: 12px; right: 12px; background: rgba(220, 38, 38, 0.95); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+        .property-details { padding: 18px; }
+        .property-title { color: #f3f4f6; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .property-location { color: #9ca3af; font-size: 13px; margin-bottom: 12px; }
+        .property-price { font-size: 26px; font-weight: bold; background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+        .property-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+        .feature-item { text-align: center; padding: 10px; background: rgba(220, 38, 38, 0.1); border-radius: 10px; }
+        .feature-value { font-size: 18px; font-weight: 700; color: #dc2626; }
+        .feature-label { font-size: 11px; color: #9ca3af; }
+        .property-cta { display: flex; gap: 8px; }
+        .cta-button { flex: 1; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; }
+        .cta-primary { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; }
+        .carousel-controls { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+        .carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(220, 38, 38, 0.3); cursor: pointer; }
+        .carousel-dot.active { width: 24px; border-radius: 4px; background: #dc2626; }
+        .typing-indicator { display: flex; gap: 6px; padding: 14px 18px; background: linear-gradient(145deg, #1f1f1f 0%, #1a1a1a 100%); border-radius: 20px; width: fit-content; }
+        .typing-indicator span { width: 9px; height: 9px; background: #dc2626; border-radius: 50%; animation: typing 1.4s ease-in-out infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-12px); } }
+        .restart-btn { width: calc(100% - 50px); margin: 25px; padding: 18px; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; border: none; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .checkmark { color: #10b981; }
+        strong { color: #ffffff; }
+
+     </style>
+ </head>
+ <body>
+ 
+     <main>
+         <!-- Strona Główna (Hero) -->
+        <section id="hero" class="container active">
+            <div class="content-wrapper">
+                <h1 class="animated-item">SystemZero</h1>
+                <p class="subtitle animated-item" style="animation-delay: 0.2s;">Profesjonalna Automatyzacja AI</p>
+                <p class="section-description animated-item" style="animation-delay: 0.4s;">Zintegruj sztuczną inteligencję z procesami Twojej firmy, aby zwiększyć efektywność, zredukować koszty i otworzyć nowe możliwości rozwoju.</p>
+                <div class="button-group animated-item" style="animation-delay: 0.6s;">
+                    <button class="btn" data-target="voice-assistant">Asystent Głosowy AI</button>
+                    <button class="btn" data-target="chat-assistant">Asystent Czatu AI</button>
+                    <button class="btn" data-target="social-media-manager">Menedżer Social Media AI</button>
+                    <button class="btn" data-target="mail-system">System Mailowy AI</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Asystent Głosowy AI -->
+        <section id="voice-assistant" class="container">
+            <div class="content-wrapper">
+                <h2 class="animated-item">Asystent Głosowy AI</h2>
+                
+                <h3 class="animated-item" style="animation-delay: 0.1s;">Opis systemu</h3>
+                <p class="section-description animated-item" style="animation-delay: 0.2s;">Inteligentny asystent głosowy, który automatyzuje obsługę klienta, zarządza rezerwacjami i odpowiada na zapytania 24/7. Rozwiązuje problem długiego czasu oczekiwania na połączenie i odciąża pracowników od powtarzalnych zadań.</p>
+
+                <h3 class="animated-item" style="animation-delay: 0.3s;">Moduły i Aplikacje</h3>
+                <div class="module-grid">
+                    <div class="module-card animated-item" style="animation-delay: 0.4s;">
+                        <div class="icon"><i class="fas fa-phone-alt"></i></div>
+                        <h4>Silnik IVR</h4>
+                        <p>Interaktywny system odpowiedzi głosowej, który kieruje rozmowy i zbiera wstępne informacje.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.5s;">
+                        <div class="icon"><i class="fas fa-brain"></i></div>
+                        <h4>Przetwarzanie Języka Naturalnego (NLP)</h4>
+                        <p>Moduł rozumiejący i interpretujący mowę ludzką, umożliwiający płynną konwersację.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.6s;">
+                        <div class="icon"><i class="fas fa-cogs"></i></div>
+                        <h4>Integracje API</h4>
+                        <p>Połączenie z Twoimi systemami (CRM, kalendarz), aby asystent miał dostęp do aktualnych danych.</p>
+                    </div>
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Z jakich aplikacji składa się system</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> <strong>Vapi.ai</strong> – obsługa połączeń głosowych i syntezy mowy.</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> <strong>Make.com</strong> / <strong>n8n</strong> – warstwa automatyzacji.</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> <strong>Airtable</strong> – baza danych i panel administracyjny.</li>
+                </ul>
+                <p class="section-description animated-item" style="animation-delay: 1.1s; font-style: italic; font-size: 0.9rem; margin-top: 1rem;"><em>*Obsługujemy wszystkie aplikacje posiadające API — wypisujemy jedynie te, które zapewniają najlepszy stosunek jakości do ceny.*</em></p>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Korzyści dla klienta</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> Skrócenie czasu oczekiwania na obsługę</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> Dostępność 24/7 bez dodatkowych kosztów</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> Automatyzacja rezerwacji i powtarzalnych zapytań</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> Zwiększenie satysfakcji klientów</li>
+                </ul>
+
+                <h3 class="animated-item" style="animation-delay: 1.2s;">Problem i rozwiązanie (przykładowa historia)</h3>
+                <p class="section-description animated-item" style="animation-delay: 1.3s;">
+                    Właściciel restauracji zauważył, że w godzinach szczytu telefony ciągle dzwonią, a pracownicy nie nadążają z ich odbieraniem. Klienci byli zirytowani, a wiele rezerwacji przepadało. Po wdrożeniu Asystenta Głosowego AI, system automatycznie odbiera wszystkie połączenia, pyta o liczbę gości i preferowaną godzinę, a następnie samodzielnie wpisuje rezerwację do kalendarza. Dzięki temu żaden klient nie jest ignorowany, a pracownicy mogą skupić się na obsłudze gości na miejscu.
+                </p>
+                
+                <h3 class="animated-item" style="animation-delay: 1.4s;">Jak to osiągamy?</h3>
+                <div class="technical-description animated-item" style="animation-delay: 1.5s;">
+Nasz system inteligentnie zarządza komunikacją głosową. Po odebraniu połączenia, zaawansowany silnik NLP w czasie rzeczywistym analizuje intencje klienta. Następnie, asystent autonomicznie integruje się z Twoimi narzędziami, takimi jak kalendarz czy system CRM, aby zweryfikować dostępne terminy lub dane. Na tej podstawie udziela precyzyjnych odpowiedzi i finalizuje proces, na przykład poprzez potwierdzenie rezerwacji i zapisanie jej bezpośrednio w Twoim systemie.
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 1.6s;">Proces Wdrożenia</h3>
+                <ol class="process-list">
+                    <li class="animated-item" style="animation-delay: 1.7s;">Analiza procesów i najczęstszych zapytań klientów.</li>
+                    <li class="animated-item" style="animation-delay: 1.8s;">Konfiguracja scenariuszy rozmów w systemie IVR.</li>
+                    <li class="animated-item" style="animation-delay: 1.9s;">Integracja z Twoimi systemami CRM i kalendarzami.</li>
+                    <li class="animated-item" style="animation-delay: 2.0s;">Testy i szkolenie modelu AI na podstawie Twoich danych.</li>
+                    <li class="animated-item" style="animation-delay: 2.1s;">Uruchomienie systemu i monitoring jego działania.</li>
+                    <li class="animated-item" style="animation-delay: 2.2s;">Ciągła optymalizacja i wsparcie techniczne.</li>
+                </ol>
+
+                 <div class="button-group">
+                    <button class="btn" data-target="chat-assistant">Asystent Czatu AI</button>
+                    <button class="btn" data-target="social-media-manager">Menedżer Social Media AI</button>
+                    <button class="btn" data-target="mail-system">System Mailowy AI</button>
+                </div>
+                <button class="btn btn-return" data-target="hero">Wróć do głównej</button>
+            </div>
+        </section>
+
+        <!-- Asystent Czatu AI -->
+        <section id="chat-assistant" class="container">
+            <div class="content-wrapper">
+                <h2 class="animated-item">Asystent Czatu AI</h2>
+                <h3 class="animated-item" style="animation-delay: 0.1s;">Opis systemu</h3>
+                <p class="section-description animated-item" style="animation-delay: 0.2s;">Inteligentny chatbot na Twoją stronę internetową i komunikatory, który prowadzi rozmowy z klientami, zbiera leady i odpowiada na pytania w czasie rzeczywistym. Idealne rozwiązanie do zwiększenia konwersji i poprawy jakości obsługi.</p>
+
+                <h3 class="animated-item" style="animation-delay: 0.3s;">Moduły i Aplikacje</h3>
+                <div class="module-grid">
+                    <div class="module-card animated-item" style="animation-delay: 0.4s;">
+                        <div class="icon"><i class="fas fa-comments"></i></div>
+                        <h4>Widget Czatowy</h4>
+                        <p>Nowoczesny i konfigurowalny widget do umieszczenia na Twojej stronie WWW.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.5s;">
+                        <div class="icon"><i class="fas fa-robot"></i></div>
+                        <h4>Konstruktor Scenariuszy</h4>
+                        <p>Intuicyjne narzędzie do budowania ścieżek rozmów bez potrzeby kodowania.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.6s;">
+                        <div class="icon"><i class="fas fa-chart-line"></i></div>
+                        <h4>Panel Analityczny</h4>
+                        <p>Śledzenie statystyk, analiza konwersacji i generowanie raportów efektywności.</p>
+                    </div>
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Z jakich aplikacji składa się system</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> <strong>Voiceflow</strong> – silnik konwersacji.</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> <strong>Make.com</strong> / <strong>n8n</strong> – warstwa automatyzacji.</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> <strong>Airtable</strong> – baza danych i panel administracyjny.</li>
+                </ul>
+                <p class="section-description animated-item" style="animation-delay: 1.1s; font-style: italic; font-size: 0.9rem; margin-top: 1rem;"><em>*Obsługujemy wszystkie aplikacje posiadające API — wypisujemy jedynie te, które zapewniają najlepszy stosunek jakości do ceny.*</em></p>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Korzyści dla klienta</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> Natychmiastowe odpowiedzi na zapytania klientów</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> Generowanie leadów sprzedażowych 24/7</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> Personalizacja rozmów i ofert</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> Integracja z Facebook Messenger i WhatsApp</li>
+                </ul>
+
+                <div class="button-group animated-item" style="animation-delay: 0.6s;">
+                    <button class="btn" id="open-chatbot-btn">Uruchom Demo Agenta AI</button>
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 1.2s;">Problem i rozwiązanie (przykładowa historia)</h3>
+                <p class="section-description animated-item" style="animation-delay: 1.3s;">
+                    Sklep internetowy z odzieżą tracił klientów, którzy opuszczali stronę, nie mogąc szybko znaleźć odpowiedzi na pytania o rozmiary czy dostępność produktów. Asystent Czatu AI został zintegrowany ze stroną i bazą danych produktów. Teraz, gdy klient pyta o "czerwoną sukienkę w rozmiarze M", chatbot natychmiast sprawdza stany magazynowe i wysyła link do produktu, a jeśli jest niedostępny, proponuje podobne modele. Dzięki temu klienci szybciej podejmują decyzje zakupowe, a sprzedaż wzrosła.
+                </p>
+
+                <h3 class="animated-item" style="animation-delay: 1.4s;">Jak to osiągamy?</h3>
+                <div class="technical-description animated-item" style="animation-delay: 1.5s;">
+Proces rozpoczyna się, gdy użytkownik inicjuje rozmowę za pośrednictwem widgetu na Twojej stronie. Nasz inteligentny chatbot natychmiast analizuje zapytanie, aby zidentyfikować intencję rozmówcy. Następnie, system dynamicznie prowadzi dialog zgodnie z wcześniej zdefiniowanym, interaktywnym scenariuszem. W strategicznych momentach konwersacji, asystent proaktywnie prosi o dane kontaktowe, które są automatycznie zapisywane w Twoim systemie CRM jako nowy, wartościowy lead.
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 1.6s;">Proces Wdrożenia</h3>
+                <ol class="process-list">
+                    <li class="animated-item" style="animation-delay: 1.7s;">Definicja celów biznesowych dla chatbota.</li>
+                    <li class="animated-item" style="animation-delay: 1.8s;">Projektowanie scenariuszy rozmów i bazy wiedzy.</li>
+                    <li class="animated-item" style="animation-delay: 1.9s;">Personalizacja wyglądu widgetu czatowego.</li>
+                    <li class="animated-item" style="animation-delay: 2.0s;">Instalacja na stronie internetowej (jeden krótki kod).</li>
+                    <li class="animated-item" style="animation-delay: 2.1s;">Testy A/B różnych wersji komunikatów.</li>
+                    <li class="animated-item" style="animation-delay: 2.2s;">Analiza wyników i optymalizacja scenariuszy.</li>
+                </ol>
+
+                <div class="button-group">
+                    <button class="btn" data-target="voice-assistant">Asystent Głosowy AI</button>
+                    <button class="btn" data-target="social-media-manager">Menedżer Social Media AI</button>
+                    <button class="btn" data-target="mail-system">System Mailowy AI</button>
+                </div>
+                <button class="btn btn-return" data-target="hero">Wróć do głównej</button>
+            </div>
+        </section>
+
+        <!-- Menedżer Social Media AI -->
+        <section id="social-media-manager" class="container">
+            <div class="content-wrapper">
+                <h2 class="animated-item">Menedżer Social Media AI</h2>
+                <h3 class="animated-item" style="animation-delay: 0.1s;">Opis systemu</h3>
+                <p class="section-description animated-item" style="animation-delay: 0.2s;">Platforma do automatyzacji marketingu w mediach społecznościowych. System generuje angażujące treści, planuje publikacje, analizuje trendy i optymalizuje kampanie reklamowe, oszczędzając Twój czas i zwiększając zasięgi.</p>
+
+                <h3 class="animated-item" style="animation-delay: 0.3s;">Moduły i Aplikacje</h3>
+                <div class="module-grid">
+                    <div class="module-card animated-item" style="animation-delay: 0.4s;">
+                        <div class="icon"><i class="fas fa-pen-nib"></i></div>
+                        <h4>Generator Treści AI</h4>
+                        <p>Tworzenie postów, grafik i krótkich wideo na podstawie podanych wytycznych.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.5s;">
+                        <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                        <h4>Inteligentny Kalendarz</h4>
+                        <p>Automatyczne planowanie publikacji w optymalnych porach dla maksymalnego zaangażowania.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.6s;">
+                        <div class="icon"><i class="fas fa-bullseye"></i></div>
+                        <h4>Optymalizator Reklam</h4>
+                        <p>Zarządzanie budżetem i targetowaniem kampanii w Meta Ads i LinkedIn Ads.</p>
+                    </div>
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Z jakich aplikacji składa się system</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> <strong>RSS</strong> – pobieranie i przetwarzanie treści.</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> <strong>Make.com</strong> / <strong>n8n</strong> – warstwa automatyzacji.</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> <strong>Model LLM (np. OpenAI)</strong> – generowanie treści.</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> <strong>Model generowania grafiki (np. DALL·E 3)</strong> – tworzenie materiałów wizualnych.</li>
+                </ul>
+                <p class="section-description animated-item" style="animation-delay: 1.1s; font-style: italic; font-size: 0.9rem; margin-top: 1rem;"><em>*Obsługujemy wszystkie aplikacje posiadające API — wypisujemy jedynie te, które zapewniają najlepszy stosunek jakości do ceny.*</em></p>
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Korzyści dla klienta</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> Oszczędność czasu dzięki automatyzacji publikacji</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> Zwiększenie zaangażowania i zasięgów organicznych</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> Lepsze wyniki kampanii reklamowych przy niższych kosztach</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> Spójna i regularna komunikacja z odbiorcami</li>
+                </ul>
+
+                <h3 class="animated-item" style="animation-delay: 1.2s;">Problem i rozwiązanie (przykładowa historia)</h3>
+                <p class="section-description animated-item" style="animation-delay: 1.3s;">
+                    Agencja marketingowa musiała poświęcać wiele godzin na ręczne tworzenie postów i grafik dla swoich klientów. Brakowało im czasu na strategiczne planowanie. System Menedżera Social Media AI przejął te obowiązki. Wystarczyło wprowadzić ogólne wytyczne, a system sam zaczął generować angażujące treści, dobierać do nich grafiki i planować publikacje na cały tydzień. Dzięki temu zespół agencji odzyskał czas, który teraz może poświęcić na analizę wyników i rozwój strategii marketingowych.
+                </p>
+
+                <h3 class="animated-item" style="animation-delay: 1.4s;">Jak to osiągamy?</h3>
+                <div class="technical-description animated-item" style="animation-delay: 1.5s;">
+Proces zaczyna się od zdefiniowania Twojej strategii marketingowej i określenia grup docelowych. Nasza sztuczna inteligencja analizuje aktualne trendy oraz dane historyczne, aby zarekomendować najbardziej angażujące tematy i formaty treści. Następnie, zaawansowany generator AI tworzy profesjonalne posty i grafiki, które przechodzą Twoją akceptację. Po zatwierdzeniu, system automatycznie planuje i publikuje treści w optymalnych porach, maksymalizując ich zasięg. Równocześnie, AI nieustannie monitoruje wyniki kampanii, autonomicznie optymalizując stawki i targetowanie, aby zapewnić najwyższą efektywność działań.
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 1.6s;">Proces Wdrożenia</h3>
+                <ol class="process-list">
+                    <li class="animated-item" style="animation-delay: 1.7s;">Podłączenie kont social media (Facebook, Instagram, LinkedIn).</li>
+                    <li class="animated-item" style="animation-delay: 1.8s;">Konfiguracja strategii contentowej i reklamowej.</li>
+                    <li class="animated-item" style="animation-delay: 1.9s;">Import materiałów marketingowych (logo, zdjęcia).</li>
+                    <li class="animated-item" style="animation-delay: 2.0s;">Pierwsza faza generowania i planowania treści.</li>
+                    <li class="animated-item" style="animation-delay: 2.1s;">Uruchomienie i monitoring pierwszych kampanii.</li>
+                    <li class="animated-item" style="animation-delay: 2.2s;">Dostosowanie strategii na podstawie danych analitycznych.</li>
+                </ol>
+
+                <div class="button-group">
+                    <button class="btn" data-target="voice-assistant">Asystent Głosowy AI</button>
+                    <button class="btn" data-target="chat-assistant">Asystent Czatu AI</button>
+                    <button class="btn" data-target="mail-system">System Mailowy AI</button>
+                </div>
+                <button class="btn btn-return" data-target="hero">Wróć do głównej</button>
+            </div>
+        </section>
+
+        <!-- System Mailowy AI -->
+        <section id="mail-system" class="container">
+            <div class="content-wrapper">
+                <h2 class="animated-item">System Mailowy AI</h2>
+                <h3 class="animated-item" style="animation-delay: 0.1s;">Opis systemu</h3>
+                <p class="section-description animated-item" style="animation-delay: 0.2s;">Zaawansowany system do automatyzacji i personalizacji kampanii e-mail marketingowych. AI analizuje zachowania odbiorców, segmentuje bazę i wysyła idealnie dopasowane wiadomości w najlepszym momencie, maksymalizując wskaźniki otwarć i kliknięć.</p>
+
+                 <h3 class="animated-item" style="animation-delay: 0.3s;">Moduły i Aplikacje</h3>
+                <div class="module-grid">
+                    <div class="module-card animated-item" style="animation-delay: 0.4s;">
+                        <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
+                        <h4>Generator Mailingów</h4>
+                        <p>Tworzenie perswazyjnych tekstów i projektowanie szablonów e-maili.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.5s;">
+                        <div class="icon"><i class="fas fa-users-cog"></i></div>
+                        <h4>Inteligentna Segmentacja</h4>
+                        <p>Automatyczne grupowanie kontaktów na podstawie ich aktywności i zainteresowań.</p>
+                    </div>
+                    <div class="module-card animated-item" style="animation-delay: 0.6s;">
+                        <div class="icon"><i class="fas fa-paper-plane"></i></div>
+                        <h4>Automatyzacja Wysyłki</h4>
+                        <p>Wysyłanie wiadomości (welcome series, porzucone koszyki) w odpowiedzi na akcje użytkowników.</p>
+                    </div>
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 0.7s;">Z jakich aplikacji składa się system</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> <strong>Instantly AI</strong> – wysyłka i zarządzanie kampaniami cold mail.</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> <strong>Make.com</strong> / <strong>n8n</strong> – warstwa automatyzacji.</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> <strong>Model LLM (np. ChatGPT)</strong> – generowanie i personalizacja treści.</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> <strong>Airtable</strong> / <strong>Arkusze Google</strong> – baza danych klientów i leadów.</li>
+                    <li class="animated-item" style="animation-delay: 1.2s;"><i class="fas fa-check-circle"></i> <strong>Hunter.io</strong> – wyszukiwanie i weryfikacja adresów email.</li>
+                    <li class="animated-item" style="animation-delay: 1.3s;"><i class="fas fa-check-circle"></i> <strong>NeverBounce</strong> – walidacja adresów i utrzymanie wysokiej reputacji skrzynki.</li>
+                </ul>
+                <p class="section-description animated-item" style="animation-delay: 1.4s; font-style: italic; font-size: 0.9rem; margin-top: 1rem;"><em>*Obsługujemy wszystkie aplikacje posiadające API — wypisujemy jedynie te, które zapewniają najlepszy stosunek jakości do ceny.*</em></p>
+                <h3 class="animated-item" style="animation-delay: 1.5s;">Korzyści dla klienta</h3>
+                <ul class="benefits-list">
+                    <li class="animated-item" style="animation-delay: 0.8s;"><i class="fas fa-check-circle"></i> Wyższe wskaźniki OR i CTR dzięki personalizacji</li>
+                    <li class="animated-item" style="animation-delay: 0.9s;"><i class="fas fa-check-circle"></i> Oszczędność czasu przy tworzeniu i zarządzaniu kampaniami</li>
+                    <li class="animated-item" style="animation-delay: 1.0s;"><i class="fas fa-check-circle"></i> Zwiększenie sprzedaży z kanału e-mail marketingowego</li>
+                    <li class="animated-item" style="animation-delay: 1.1s;"><i class="fas fa-check-circle"></i> Budowanie trwałych relacji z klientami</li>
+                </ul>
+
+                <h3 class="animated-item" style="animation-delay: 1.2s;">Problem i rozwiązanie (przykładowa historia)</h3>
+                <p class="section-description animated-item" style="animation-delay: 1.3s;">
+                    Firma szkoleniowa miała dużą bazę kontaktów, ale ich kampanie e-mailowe były mało skuteczne, a wskaźniki otwarć niskie. System Mailowy AI przeanalizował historię aktywności odbiorców i automatycznie podzielił ich na segmenty. Kiedy firma ogłosiła nowy kurs, system wysłał spersonalizowane wiadomości tylko do osób, które wcześniej interesowały się podobną tematyką. W rezultacie wskaźnik otwarć e-maili wzrósł trzykrotnie, a miejsca na szkolenie wyprzedały się w ciągu kilku dni.
+                </p>
+
+                <h3 class="animated-item" style="animation-delay: 1.4s;">Jak to osiągamy?</h3>
+                <div class="technical-description animated-item" style="animation-delay: 1.5s;">
+Kluczem do sukcesu jest integracja naszego systemu z Twoją platformą e-commerce lub stroną internetową, co pozwala na precyzyjne śledzenie aktywności użytkowników, w tym przeglądanych produktów i kliknięć. Na podstawie zebranych danych, sztuczna inteligencja tworzy dynamiczne, wysoce spersonalizowane segmenty odbiorców. Gdy użytkownik wykona określoną akcję, taką jak porzucenie koszyka, system-trigger natychmiast uruchamia automatyczną wysyłkę dopasowanej, spersonalizowanej wiadomości, maksymalizując szansę na konwersję.
+                </div>
+
+                <h3 class="animated-item" style="animation-delay: 1.6s;">Proces Wdrożenia</h3>
+                <ol class="process-list">
+                    <li class="animated-item" style="animation-delay: 1.7s;">Import bazy kontaktów i integracja z Twoją platformą.</li>
+                    <li class="animated-item" style="animation-delay: 1.8s;">Konfiguracja śledzenia zdarzeń na stronie.</li>
+                    <li class="animated-item" style="animation-delay: 1.9s;">Stworzenie pierwszych scenariuszy automatyzacji.</li>
+                    <li class="animated-item" style="animation-delay: 2.0s;">Zaprojektowanie szablonów e-maili firmowych.</li>
+                    <li class="animated-item" style="animation-delay: 2.1s;">Uruchomienie kampanii i faza testów.</li>
+                    <li class="animated-item" style="animation-delay: 2.2s;">Analiza wyników i optymalizacja ścieżek automatyzacji.</li>
+                </ol>
+
+                <div class="button-group">
+                    <button class="btn" data-target="voice-assistant">Asystent Głosowy AI</button>
+                    <button class="btn" data-target="chat-assistant">Asystent Czatu AI</button>
+                    <button class="btn" data-target="social-media-manager">Menedżer Social Media AI</button>
+                </div>
+                <button class="btn btn-return" data-target="hero">Wróć do głównej</button>
+            </div>
+        </section>
+    </main>
+
+    <div class="chatbot-popup" id="chatbot-popup">
+        <button class="popup-close-btn" id="close-chatbot-btn">&times;</button>
+        <div class="demo-container">
+            <div class="chat-header">
+                <div class="logo-container">
+                    <img src="https://systemzero.pl/wp-content/uploads/2025/11/brain-8-svgrepo-com.png" alt="Logo">
+                </div>
+                <div class="header-text">
+                    <h2>SystemZero.pl</h2>
+                    <p><span class="status-indicator"></span>AI Chat Agent Online</p>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <button class="restart-btn" id="restartBtn" style="display: none;">
+                <span>🔄 Odtwórz ponownie</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.btn');
+            const containers = document.querySelectorAll('.container');
+            let activeContainer = document.querySelector('.container.active');
+
+            // Function to animate items in a container
+            const animateItems = (container) => {
+                const items = container.querySelectorAll('.animated-item');
+                items.forEach(item => {
+                    // Reset animation
+                    item.style.animation = 'none';
+                    item.offsetHeight; // Trigger reflow
+                    item.style.animation = '';
+                });
+            };
+            
+            // Initial animation for the hero section
+            animateItems(activeContainer);
+
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = button.dataset.target;
+                    const targetContainer = document.getElementById(targetId);
+
+                    if (targetContainer && targetContainer !== activeContainer) {
+                        
+                        // Add exit animation to current container
+                        if(activeContainer) {
+                             activeContainer.classList.add('exit');
+                        }
+
+                        // Wait for exit animation to almost finish
+                        setTimeout(() => {
+                            if(activeContainer) {
+                                activeContainer.classList.remove('active');
+                                activeContainer.classList.remove('exit');
+                            }
+                            
+                            targetContainer.classList.add('active');
+                            animateItems(targetContainer);
+                            activeContainer = targetContainer;
+                            
+                        }, 400);
+                    }
+                });
+            });
+
+            const chatbotPopup = document.getElementById('chatbot-popup');
+            const openChatbotBtn = document.getElementById('open-chatbot-btn');
+            const closeChatbotBtn = document.getElementById('close-chatbot-btn');
+
+            openChatbotBtn.addEventListener('click', () => {
+                chatbotPopup.style.display = 'flex';
+                // Start or restart the demo when popup opens
+                restartDemo(); 
+            });
+
+            closeChatbotBtn.addEventListener('click', () => {
+                chatbotPopup.style.display = 'none';
+            });
+
+            chatbotPopup.addEventListener('click', (e) => {
+                if (e.target === chatbotPopup) {
+                    chatbotPopup.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // --- Chatbot Logic ---
+        const properties = [
+            {
+                image: 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://vilea.pl/wp-content/uploads/2025/07/mieszkanie-na-sprzedaz-warszawa-wola-ul-kolejowa-vilea-property-butique-1.jpg)',
+                badge: 'NOWE',
+                title: 'Nowoczesne mieszkanie 3-pokojowe',
+                location: '📍 Wilanów, Warszawa',
+                price: '890 000 zł',
+                description: 'Przestronne mieszkanie w nowoczesnej inwestycji. Duży balkon z widokiem na zieleń, miejsca parkingowe w cenie. Wysoki standard wykończenia.',
+            },
+            {
+                image: 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://poradnikbudowlany.eu/wp-content/uploads/2019/11/pexels-photo-750x400-750x400.jpeg)',
+                badge: 'POLECANE',
+                title: 'Komfortowe mieszkanie z tarasem',
+                location: '📍 Mokotów, Warszawa',
+                price: '850 000 zł',
+                description: 'Świetnie zaprojektowane mieszkanie w kameralnej inwestycji. Taras 15m², dwie łazienki, komórka lokatorska. Blisko metra i szkół.',
+            }
+        ];
+
+        const conversation = [
+            { type: 'ai', text: '👋 Witam! Jestem agentem nieruchomości SystemZero. Pomogę Ci znaleźć idealne mieszkanie. Czego szukasz?', delay: 500 },
+            { type: 'user', text: 'Szukam 3-pokojowego mieszkania w Warszawie', delay: 2000 },
+            { type: 'ai', text: 'Doskonale! Pomogę Ci wybrać najlepszą opcję. Odpowiedz na kilka pytań:<br><br>1. Jaki masz budżet?', delay: 1500 },
+            { type: 'user', text: 'Do 900 000 zł', delay: 2000 },
+            { type: 'ai', text: '<span class="checkmark">✓</span> Budżet do 900 000 zł - Super!<br><br>2. Jaki metraż Cię interesuje?', delay: 1500 },
+            { type: 'user', text: 'Od 60 do 70 m²', delay: 2000 },
+            { type: 'ai', text: '<span class="checkmark">✓</span> 60-70 m² - Idealnie!<br><br>3. Czy preferujesz jakąś dzielnicę?', delay: 1500 },
+            { type: 'user', text: 'Mokotów lub Wilanów', delay: 2000 },
+            { type: 'ai', text: '<span class="checkmark">✓</span> Mokotów lub Wilanów - Świetny wybór!<br><br>🏠 Przeanalizowałem bazę i znalazłem <strong>2 idealne oferty</strong> dopasowane do Twoich wymagań:', delay: 2000, showCarousel: true },
+            { type: 'user', text: 'Który ma lepszy dostęp do komunikacji?', delay: 3500 },
+            { type: 'ai', text: 'Świetne pytanie! 🚇<br><br><strong>Mieszkanie na Mokotowie</strong> ma zdecydowanie lepszy dostęp - 5 minut spacerem do stacji metra Wilanowska.<br><br>Czy chcesz umówić się na prezentację?', delay: 2000 },
+            { type: 'user', text: 'Tak, chciałbym zobaczyć to na Mokotowie', delay: 2500 },
+            { type: 'ai', text: '✅ Doskonały wybór!<br><br>📅 Zarezerwowałem dla Ciebie wizytę w <strong>piątek o 15:00</strong><br>📧 Szczegóły wysłałem na maila.<br><br>Czy potrzebujesz jeszcze jakichś informacji?', delay: 2000 }
+        ];
+
+        let convoCurrentIndex = 0;
+        let currentSlide = 0;
+        const chatMessages = document.getElementById('chatMessages');
+        const restartBtn = document.getElementById('restartBtn');
+
+        restartBtn.addEventListener('click', restartDemo);
+
+        function createCarousel() {
+            return `
+                <div class="property-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            ${properties.map(prop => `
+                                <div class="property-card">
+                                    <div class="property-image" style="background: ${prop.image}">
+                                        <div class="property-badge">${prop.badge}</div>
+                                    </div>
+                                    <div class="property-details">
+                                        <h3 class="property-title">${prop.title}</h3>
+                                        <div class="property-location">${prop.location}</div>
+                                        <div class="property-price">${prop.price}</div>
+                                        <p class="property-description">${prop.description}</p>
+                                        <div class="property-cta">
+                                            <button class="cta-button cta-primary">📞 Umów wizytę</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        ${properties.map((_, index) => `<div class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>`).join('')}
+                    </div>
+                </div>`;
+        }
+
+        function updateCarousel(index) {
+            const track = document.getElementById('carouselTrack');
+            if (track) {
+                track.style.transform = `translateX(-${index * 100}%)`;
+                document.querySelectorAll('.carousel-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel(currentSlide);
+        }
+
+        function addMessage(type, text, showCarousel = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            const avatar = `<div class="message-avatar">${type === 'ai' ? '<img src="https://systemzero.pl/wp-content/uploads/2025/11/brain-8-svgrepo-com.png" alt="AI">' : '👤'}</div>`;
+            const content = `<div class="message-content">${text}</div>`;
+            messageDiv.innerHTML = avatar + content;
+            chatMessages.appendChild(messageDiv);
+
+            if (showCarousel) {
+                setTimeout(() => {
+                    messageDiv.querySelector('.message-content').innerHTML += createCarousel();
+                    currentSlide = 0;
+                }, 500);
+            }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const typingDiv = `<div class="message ai" id="typing"><div class="message-avatar"><img src="https://systemzero.pl/wp-content/uploads/2025/11/brain-8-svgrepo-com.png" alt="AI"></div><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+            chatMessages.innerHTML += typingDiv;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTyping() {
+            document.getElementById('typing')?.remove();
+        }
+
+        function processConversation() {
+            if (convoCurrentIndex >= conversation.length) {
+                setTimeout(() => {
+                    restartBtn.style.display = 'block';
+                }, 1000);
+                return;
+            }
+
+            const current = conversation[convoCurrentIndex];
+            setTimeout(() => {
+                if (current.type === 'ai') {
+                    showTyping();
+                    setTimeout(() => {
+                        removeTyping();
+                        addMessage(current.type, current.text, current.showCarousel);
+                        convoCurrentIndex++;
+                        processConversation();
+                    }, 1500);
+                } else {
+                    addMessage(current.type, current.text);
+                    convoCurrentIndex++;
+                    processConversation();
+                }
+            }, current.delay);
+        }
+
+        function restartDemo() {
+            convoCurrentIndex = 0;
+            currentSlide = 0;
+            chatMessages.innerHTML = '';
+            restartBtn.style.display = 'none';
+            processConversation();
+        }
+    </script>
+
+</body>
+</html>
